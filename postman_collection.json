@@ -1,0 +1,434 @@
+{
+	"info": {
+		"_postman_id": "exchange-rate-service",
+		"name": "Exchange Rate Service - Banco Pichincha",
+		"description": "Colección de endpoints para el servicio de tipos de cambio",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login - Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"token\", jsonData.token);",
+									"    pm.environment.set(\"username\", jsonData.username);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Autentica el usuario admin y obtiene un token JWT"
+					},
+					"response": []
+				},
+				{
+					"name": "Login - User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"token\", jsonData.token);",
+									"    pm.environment.set(\"username\", jsonData.username);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"user\",\n  \"password\": \"user123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Autentica el usuario user y obtiene un token JWT"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints de autenticación"
+		},
+		{
+			"name": "Exchange Rate",
+			"item": [
+				{
+					"name": "Create Exchange Rate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"monedaOrigen\": \"PEN\",\n  \"monedaDestino\": \"USD\",\n  \"tipoCambio\": 0.27\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/exchange-rate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"exchange-rate"
+							]
+						},
+						"description": "Crea un nuevo tipo de cambio"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Exchange Rate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"tipoCambio\": 0.28\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/exchange-rate/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"exchange-rate",
+								"1"
+							]
+						},
+						"description": "Actualiza un tipo de cambio existente"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Exchange Rate by Monedas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/exchange-rate?origen=PEN&destino=USD",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"exchange-rate"
+							],
+							"query": [
+								{
+									"key": "origen",
+									"value": "PEN"
+								},
+								{
+									"key": "destino",
+									"value": "USD"
+								}
+							]
+						},
+						"description": "Busca un tipo de cambio por moneda origen y destino"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Exchange Rates",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/exchange-rate/all",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"exchange-rate",
+								"all"
+							]
+						},
+						"description": "Obtiene todos los tipos de cambio"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Exchange Rate by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/exchange-rate/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"exchange-rate",
+								"1"
+							]
+						},
+						"description": "Obtiene un tipo de cambio por ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Exchange Rate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/exchange-rate/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"exchange-rate",
+								"1"
+							]
+						},
+						"description": "Elimina un tipo de cambio"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para operaciones CRUD de tipos de cambio"
+		},
+		{
+			"name": "Exchange",
+			"item": [
+				{
+					"name": "Apply Exchange",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"monedaOrigen\": \"PEN\",\n  \"monedaDestino\": \"USD\",\n  \"monto\": 100.00\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/exchange/apply",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"exchange",
+								"apply"
+							]
+						},
+						"description": "Aplica un tipo de cambio a un monto y registra la operación en auditoría"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para aplicar tipos de cambio"
+		},
+		{
+			"name": "Database",
+			"item": [
+				{
+					"name": "Get All Exchange Rates",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/db/exchange-rates",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"db",
+								"exchange-rates"
+							]
+						},
+						"description": "Obtiene todos los tipos de cambio de la base de datos (solo ADMIN)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Audit Logs",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/db/audit-logs",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"db",
+								"audit-logs"
+							]
+						},
+						"description": "Obtiene todos los logs de auditoría de la base de datos (solo ADMIN)"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para consultar datos de la base de datos (solo ADMIN)"
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "username",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
+

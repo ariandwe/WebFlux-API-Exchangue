@@ -1,0 +1,72 @@
+package com.example.demo.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.support.WebExchangeBindException;
+import reactor.core.publisher.Mono;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Manejador global de excepciones para la aplicación.
+ */
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+    
+    @ExceptionHandler(ExchangeRateNotFoundException.class)
+    public Mono<ResponseEntity<Map<String, Object>>> handleExchangeRateNotFound(
+            ExchangeRateNotFoundException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.NOT_FOUND.value());
+        body.put("error", "Not Found");
+        body.put("message", ex.getMessage());
+        
+        return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body(body));
+    }
+    
+    @ExceptionHandler(ExchangeRateAlreadyExistsException.class)
+    public Mono<ResponseEntity<Map<String, Object>>> handleExchangeRateAlreadyExists(
+            ExchangeRateAlreadyExistsException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.CONFLICT.value());
+        body.put("error", "Conflict");
+        body.put("message", ex.getMessage());
+        
+        return Mono.just(ResponseEntity.status(HttpStatus.CONFLICT).body(body));
+    }
+    
+    @ExceptionHandler(WebExchangeBindException.class)
+    public Mono<ResponseEntity<Map<String, Object>>> handleValidationExceptions(
+            WebExchangeBindException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("error", "Validation Error");
+        
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(error -> 
+            errors.put(error.getField(), error.getDefaultMessage())
+        );
+        body.put("errors", errors);
+        
+        return Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body));
+    }
+    
+    @ExceptionHandler(Exception.class)
+    public Mono<ResponseEntity<Map<String, Object>>> handleGenericException(Exception ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        body.put("error", "Internal Server Error");
+        body.put("message", ex.getMessage());
+        
+        return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body));
+    }
+}
+
