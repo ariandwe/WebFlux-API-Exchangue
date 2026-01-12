@@ -52,20 +52,20 @@ com.example.demo
 ## Requisitos Funcionales
 
 ### 1. CRUD de Tipos de Cambio
-- ✅ Crear tipo de cambio
-- ✅ Actualizar tipo de cambio
-- ✅ Buscar por moneda origen/destino
-- ✅ Listar todos los tipos de cambio
-- ✅ Obtener por ID
-- ✅ Eliminar tipo de cambio
+-  Crear tipo de cambio
+-  Actualizar tipo de cambio
+-  Buscar por moneda origen/destino
+-  Listar todos los tipos de cambio
+-  Obtener por ID
+-  Eliminar tipo de cambio
 
 ### 2. Aplicar Tipo de Cambio
-- ✅ Aplicar tipo de cambio a un monto
-- ✅ Cálculo: `montoConvertido = montoInicial * tipoCambio`
+-  Aplicar tipo de cambio a un monto
+-  Cálculo: `montoConvertido = montoInicial * tipoCambio`
 
 ### 3. Auditoría
-- ✅ Registro automático de cada operación de cambio
-- ✅ Campos registrados:
+-  Registro automático de cada operación de cambio
+-  Campos registrados:
   - Usuario (desde JWT)
   - Fecha
   - Monto inicial
@@ -74,10 +74,10 @@ com.example.demo
   - Monedas implicadas
 
 ### 4. Autenticación JWT
-- ✅ Endpoint `/auth/login` público
-- ✅ Usuarios en memoria (admin/user)
-- ✅ Resto de endpoints protegidos
-- ✅ Validación de token en cada request
+-  Endpoint `/auth/login` público
+-  Usuarios en memoria (admin/user)
+-  Resto de endpoints protegidos
+-  Validación de token en cada request
 
 ## Endpoints
 
@@ -341,4 +341,5 @@ demo/
 ## Autor
 
 Desarrollado como solución al reto técnico de Banco Pichincha.
+Arian Aranda Egusquiza
 
